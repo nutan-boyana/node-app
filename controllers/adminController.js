@@ -157,4 +157,8 @@ exports.editUserPage = (req, res) => {
   });
 };
 
+// settings page
+exports.settingsPage = (req, res) => {
+  res.render('settings');
+};
 

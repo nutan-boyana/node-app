@@ -27,5 +27,17 @@ router.get('/create-user', adminController.createPage);
 
 router.get('/editUser/:id', adminController.editUserPage);
 
+// router.get('/settings', adminController.settingsPage);
+
+router.get('/settings', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  res.render('settings', {
+    user: req.session.user   
+  });
+});
+
 
 module.exports = router;
