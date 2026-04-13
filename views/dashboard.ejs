@@ -1,0 +1,26 @@
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-md-3 col-lg-2 bg-dark text-white min-vh-100 p-3">
+        <%- include('includes/sidebar', { user: user }) %>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 col-lg-10 p-4">
+        <h1 class="mb-4">Welcome <%= user.name %></h1>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Dashboard</h5>
+            <p class="card-text">This is your dashboard content.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

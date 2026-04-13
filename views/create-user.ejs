@@ -1,0 +1,116 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 bg-dark text-white min-vh-100 p-3">
+      <%- include('includes/sidebar', { user: user }) %>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+
+      <h2>Create User</h2>
+
+      <form id="createForm" novalidate>
+
+        <!-- Name -->
+        <div class="mb-3">
+          <input name="name" placeholder="Name" class="form-control" />
+          <small class="text-danger" id="nameError"></small>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <input name="email" placeholder="Email" class="form-control" />
+          <small class="text-danger" id="emailError"></small>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <input type="password" name="password" placeholder="Password" class="form-control" />
+          <small class="text-danger" id="passwordError"></small>
+        </div>
+
+        <!-- Role Dropdown -->
+        <div class="mb-3">
+          <select name="role" class="form-control">
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+          <small class="text-danger" id="roleError"></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('createForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Clear previous errors
+    document.getElementById('nameError').innerText = "";
+    document.getElementById('emailError').innerText = "";
+    document.getElementById('passwordError').innerText = "";
+    document.getElementById('roleError').innerText = "";
+
+    const name = this.name.value.trim();
+    const email = this.email.value.trim();
+    const password = this.password.value.trim();
+    const role = this.role.value.trim();
+
+    let isValid = true;
+
+    // Name validation
+    if (!name) {
+        document.getElementById('nameError').innerText = "Name is required";
+        isValid = false;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+        document.getElementById('emailError').innerText = "Email is required";
+        isValid = false;
+    } else if (!emailPattern.test(email)) {
+        document.getElementById('emailError').innerText = "Enter a valid email";
+        isValid = false;
+    }
+
+    // Password validation
+    if (!password) {
+        document.getElementById('passwordError').innerText = "Password is required";
+        isValid = false;
+    } else if (password.length < 6) {
+        document.getElementById('passwordError').innerText = "Minimum 6 characters required";
+        isValid = false;
+    }
+
+    // Role validation
+    if (!role) {
+        document.getElementById('roleError').innerText = "Please select a role";
+        isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Submit data
+    fetch('/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, role })
+    })
+    .then(res => res.json())
+    .then(data => {
+        window.location.href = '/manage-users';
+    })
+    .catch(err => {
+        console.error(err);
+    });
+});
+</script>
