@@ -1,26 +1,37 @@
 <div class="container-fluid">
   <div class="row">
+
     <!-- Sidebar -->
     <div class="col-md-3 col-lg-2 bg-dark text-white min-vh-100 p-3">
       <%- include('includes/sidebar', { user: user }) %>
     </div>
-    <div class="col-md-3 col-lg-10 p-4">
-      <button onclick="window.location.href='/create-user'" class="btn btn-primary mb-3">
-        + Create User
-      </button>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
 
-        <tbody id="userTable"></tbody>
-      </table>
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Users</h4>
+        <button onclick="window.location.href='/create-user'" class="btn btn-primary">
+          + Create User
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Role</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="userTable"></tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </div>

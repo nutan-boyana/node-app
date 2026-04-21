@@ -9,6 +9,10 @@ router.get('/login', (req, res) => {
   res.render('login'); 
 });
 
+router.get('/', (req, res) => {
+  res.render('home'); 
+});
+
 router.get('/admin/dashboard', (req, res) => {
   res.send('Admin Dashboard');
 });
