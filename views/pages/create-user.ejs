@@ -37,8 +37,20 @@
             <option value="">Select Role</option>
             <option value="admin">Admin</option>
             <option value="user">User</option>
+            <option value="manager">Manager</option>
           </select>
           <small class="text-danger" id="roleError"></small>
+        </div>
+
+        <!-- Department Dropdown -->
+        <div class="mb-3">
+          <select name="department_id" class="form-control">
+            <option value="">Select Department</option>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept.department_id %>"><%= dept.department_name %></option>
+            <% }); %>
+          </select>
+          <small class="text-danger" id="departmentError"></small>
         </div>
 
         <button type="submit" class="btn btn-primary">Create</button>
@@ -58,11 +70,13 @@ document.getElementById('createForm').addEventListener('submit', function (e) {
     document.getElementById('emailError').innerText = "";
     document.getElementById('passwordError').innerText = "";
     document.getElementById('roleError').innerText = "";
+    document.getElementById('departmentError').innerText = "";
 
     const name = this.name.value.trim();
     const email = this.email.value.trim();
     const password = this.password.value.trim();
     const role = this.role.value.trim();
+    const department_id = this.department_id.value.trim();
 
     let isValid = true;
 
@@ -97,13 +111,19 @@ document.getElementById('createForm').addEventListener('submit', function (e) {
         isValid = false;
     }
 
+    // Department validation
+    if (!department_id) {
+        document.getElementById('departmentError').innerText = "Please select a department";
+        isValid = false;
+    }
+
     if (!isValid) return;
 
     // Submit data
     fetch('/create-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role })
+        body: JSON.stringify({ name, email, password, role, department_id })
     })
     .then(res => res.json())
     .then(data => {

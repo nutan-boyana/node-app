@@ -29,6 +29,17 @@
                     <input name="role" value="<%= user.role %>" class="form-control" placeholder="Enter role">
                 </div>
 
+                <!-- Department -->
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select name="department_id" class="form-control">
+                        <option value="">Select Department</option>
+                        <% departments.forEach(dept => { %>
+                            <option value="<%= dept.department_id %>" <%= user.department_id === dept.department_id ? 'selected' : '' %>><%= dept.department_name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+
                 <!-- Button -->
                 <button type="submit" class="btn btn-primary w-100">
                     Update User
@@ -49,7 +60,8 @@
             body: JSON.stringify({
                 name: this.name.value,
                 email: this.email.value,
-                role: this.role.value
+                role: this.role.value,
+                department_id: this.department_id.value
             })
         })
             .then(res => res.json())

@@ -9,7 +9,7 @@ router.get('/getUserById/:id', adminController.getUserById);
 
 router.get('/manage-users', (req, res) => {
   if (!req.session.user) {
-    return res.redirect('/login');
+    return res.redirect('/');
   }
 
   res.render('pages/manage-users', {
@@ -20,6 +20,8 @@ router.get('/manage-users', (req, res) => {
 router.post('/create-user', adminController.createUser);
 
 router.put('/update-user/:id', adminController.updateUser);
+
+router.put('/toggle-user-status/:id', adminController.toggleUserStatus);
 
 router.delete('/delete-user/:id', adminController.deleteUser);
 
@@ -37,5 +39,32 @@ router.get('/settings', (req, res) => {
   });
 });
 
+router.get('/departments', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+
+  res.render('pages/departments', {
+    user: req.session.user   
+  });
+});
+
+router.post('/create-department', adminController.createDepartment);
+
+router.put('/toggle-department-status/:id', adminController.toggleDepartmentStatus);
+
+router.delete('/delete-department/:id', adminController.deleteDepartment);
+
+router.get('/create-department', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+
+  res.render('pages/create-department', {
+    user: req.session.user   
+  });
+});
+
+router.get('/getAllDepartments', adminController.getAllDepartments);
 
 module.exports = router;

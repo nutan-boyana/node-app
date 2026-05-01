@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 bg-dark text-white min-vh-100 p-3">
+      <%- include('../includes/sidebar', { user: user }) %>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+
+      <h2>Create Department</h2>
+
+      <form id="createDepartmentForm" novalidate>
+
+        <!-- Name -->
+        <div class="mb-3">
+          <input name="department_name" placeholder="Department Name" class="form-control" />
+          <small class="text-danger" id="department_nameError"></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('createDepartmentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Clear previous errors
+    document.getElementById('department_nameError').innerText = "";
+
+    const department_name = this.department_name.value.trim();
+
+    let isValid = true;
+
+    // Name validation
+    if (!department_name) {
+        document.getElementById('department_nameError').innerText = "Department name is required";
+        isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Submit data
+    fetch('/create-department', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ department_name })
+    })
+    .then(res => res.json())
+    .then(data => {
+        window.location.href = '/manage-departments';
+    })
+    .catch(err => {
+        console.error(err);
+    });
+});
+</script>
