@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2026 at 07:37 AM
+-- Generation Time: May 01, 2026 at 02:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `departments`
+--
+
+CREATE TABLE `departments` (
+  `department_id` int(11) NOT NULL,
+  `department_name` varchar(100) NOT NULL,
+  `delete_status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `departments`
+--
+
+INSERT INTO `departments` (`department_id`, `department_name`, `delete_status`) VALUES
+(1, 'Development', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -32,21 +51,28 @@ CREATE TABLE `users` (
   `name` varchar(25) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  `role` varchar(20) DEFAULT NULL
+  `role` varchar(20) DEFAULT NULL,
+  `department_id` int(11) NOT NULL,
+  `delete_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
-(1, 'Admin', 'admin@gmail.com', '$2b$10$/AYBr.GFxnl3JdnEZiZ5qOLgdn7wfCDxKPvLm4B7yUy6z60uTZkxC', 'admin'),
-(2, 'User', 'user@gmail.com', '$2b$10$/AYBr.GFxnl3JdnEZiZ5qOLgdn7wfCDxKPvLm4B7yUy6z60uTZkxC', 'user'),
-(8, 'Nutan', 'nutan@gmail.com', '$2b$10$l0TIXdTVKB8UzHPPFRRnSO3Qa7tTL1WJs0lEjGBtVQ6Fy/vvIqyj2', 'manager');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `department_id`, `delete_status`) VALUES
+(1, 'Admin', 'admin@gmail.com', '$2b$10$/AYBr.GFxnl3JdnEZiZ5qOLgdn7wfCDxKPvLm4B7yUy6z60uTZkxC', 'admin', 1, 0),
+(2, 'User', 'user@gmail.com', '$2b$10$/AYBr.GFxnl3JdnEZiZ5qOLgdn7wfCDxKPvLm4B7yUy6z60uTZkxC', 'user', 1, 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `departments`
+--
+ALTER TABLE `departments`
+  ADD PRIMARY KEY (`department_id`);
 
 --
 -- Indexes for table `users`
@@ -57,6 +83,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `departments`
+--
+ALTER TABLE `departments`
+  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
