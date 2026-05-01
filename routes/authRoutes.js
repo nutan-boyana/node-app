@@ -5,25 +5,13 @@ const authController = require('../controllers/authController');
 
 router.post('/login', authController.login);
 
-router.get('/login', (req, res) => {
-  res.render('pages/login'); 
-});
-
 router.get('/', (req, res) => {
-  res.render('pages/home'); 
-});
-
-router.get('/admin/dashboard', (req, res) => {
-  res.send('Admin Dashboard');
-});
-
-router.get('/user/home', (req, res) => {
-  res.send('User Home');
+  res.render('pages/login'); 
 });
 
 router.get('/dashboard', (req, res) => {
   if (!req.session.user) {
-    return res.redirect('/login');
+    return res.redirect('/');
   }
 
   res.render('pages/dashboard', {
@@ -33,7 +21,7 @@ router.get('/dashboard', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/login');
+    res.redirect('/');
   });
 });
 
