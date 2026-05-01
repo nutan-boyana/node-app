@@ -3,3 +3,5 @@ node_modules/
 
 # Environment variables (Secrets)
 .env
+
+node-app.zip

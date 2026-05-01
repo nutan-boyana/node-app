@@ -6,11 +6,11 @@ const authController = require('../controllers/authController');
 router.post('/login', authController.login);
 
 router.get('/login', (req, res) => {
-  res.render('login'); 
+  res.render('pages/login'); 
 });
 
 router.get('/', (req, res) => {
-  res.render('home'); 
+  res.render('pages/home'); 
 });
 
 router.get('/admin/dashboard', (req, res) => {
@@ -26,7 +26,7 @@ router.get('/dashboard', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('dashboard', {
+  res.render('pages/dashboard', {
     user: req.session.user
   });
 });

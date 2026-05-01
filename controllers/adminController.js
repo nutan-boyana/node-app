@@ -1,4 +1,5 @@
 const db = require('../config/connection');
+const bcrypt = require('bcryptjs');
 
 exports.getAllUsers = (req, res) => {
   if (!req.session.user || req.session.user.role !== 'admin') {
@@ -39,42 +40,59 @@ exports.getUserById = (req, res) => {
   });
 };
 
-exports.createUser = (req, res) => {
+exports.createUser = async (req, res) => {
   if (!req.session.user || req.session.user.role !== 'admin') {
     return res.status(403).json({ status: 'forbidden' });
   }
 
-  const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
 
-  db.query(sql, [req.body.name, req.body.email, req.body.password, req.body.role], (err, results) => {
-    if (err) {
-      return res.status(500).json({ status: 'error' });
-    }
+    db.query(sql, [req.body.name, req.body.email, hashedPassword, req.body.role], (err, results) => {
+      if (err) {
+        return res.status(500).json({ status: 'error' });
+      }
 
-    res.json({
-      status: 'success',
-      users: results
+      res.json({
+        status: 'success',
+        users: results
+      });
     });
-  });
+  } catch (err) {
+    return res.status(500).json({ status: 'error' });
+  }
 };
 
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   if (!req.session.user || req.session.user.role !== 'admin') {
     return res.status(403).json({ status: 'forbidden' });
   }
 
-  const sql = 'UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?';
-
-  db.query(sql, [req.body.name, req.body.email, req.body.password, req.body.role, req.params.id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ status: 'error' });
+  try {
+    let sql, params;
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      sql = 'UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?';
+      params = [req.body.name, req.body.email, hashedPassword, req.body.role, req.params.id];
+    } else {
+      sql = 'UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?';
+      params = [req.body.name, req.body.email, req.body.role, req.params.id];
     }
 
-    res.json({
-      status: 'success',
-      users: results
+    db.query(sql, params, (err, results) => {
+      if (err) {
+        return res.status(500).json({ status: 'error' });
+      }
+
+      res.json({
+        status: 'success',
+        users: results
+      });
     });
-  });
+  } catch (err) {
+    return res.status(500).json({ status: 'error' });
+  }
 };
 
 // exports.deleteUser = (req, res) => {
@@ -127,7 +145,7 @@ exports.createPage = (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('create-user', {
+  res.render('pages/create-user', {
     user: req.session.user 
   });
 };
@@ -151,7 +169,7 @@ exports.editUserPage = (req, res) => {
       return res.redirect('/manage-users');
     }
 
-    res.render('edit-user', {
+    res.render('pages/edit-user', {
       user: result[0]
     });
   });
@@ -161,4 +179,5 @@ exports.editUserPage = (req, res) => {
 exports.settingsPage = (req, res) => {
   res.render('settings');
 };
+
 

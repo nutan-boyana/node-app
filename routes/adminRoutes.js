@@ -12,7 +12,7 @@ router.get('/manage-users', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('manage-users', {
+  res.render('pages/manage-users', {
     user: req.session.user   
   });
 });
@@ -34,7 +34,7 @@ router.get('/settings', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('settings', {
+  res.render('pages/settings', {
     user: req.session.user   
   });
 });
